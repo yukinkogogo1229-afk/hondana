@@ -291,8 +291,6 @@
     <label for="worry">いま、どんなことで悩んでいますか？</label>
     <textarea id="worry" placeholder="例）仕事に自信が持てず、毎朝ゆううつ。人間関係にも疲れてしまった…"></textarea>
 
-    <div class="chips" id="chips"><!-- JSで生成 --></div>
-
     <button class="go-btn" id="goBtn">この悩みに効く本を探す</button>
   </section>
 
@@ -674,17 +672,6 @@ function recommend(){
     theme, query, books: hits
   });
 }
-
-/* チップ生成 */
-const chipsBox = document.getElementById("chips");
-CATEGORIES.forEach(c=>{
-  const chip = document.createElement("div");
-  chip.className = "chip";
-  chip.dataset.cat = c.id;
-  chip.textContent = `${c.emoji} ${c.name}`;
-  chip.onclick = ()=> chip.classList.toggle("active");
-  chipsBox.appendChild(chip);
-});
 
 /* ジャンルカード生成 */
 const catsGrid = document.getElementById("catsGrid");
