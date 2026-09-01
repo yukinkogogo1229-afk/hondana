@@ -133,6 +133,30 @@
   .go-btn:hover{filter:brightness(1.03);box-shadow:0 16px 34px rgba(240,160,130,.45)}
   .go-btn:active{transform:translateY(1px)}
 
+  /* ---------- Search panel ---------- */
+  .search-panel{
+    background:linear-gradient(135deg,#fff3ea,#f2f8f3);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:26px 24px;
+    margin-bottom:34px;
+    box-shadow:0 12px 30px rgba(200,160,130,.14);
+  }
+  .sp-head{font-size:17px;font-weight:800;color:var(--ink-strong);margin-bottom:4px;line-height:1.5}
+  .sp-sub{color:var(--sub);font-size:13.5px;margin:0 0 18px}
+  .sp-btns{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px}
+  .sp-btn{
+    display:flex;flex-direction:column;gap:3px;text-decoration:none;
+    background:#fff;border:1.5px solid var(--line);border-radius:16px;
+    padding:15px 16px;transition:all .18s;
+  }
+  .sp-btn b{font-size:15px;color:var(--ink-strong)}
+  .sp-btn span{font-size:12px;color:var(--sub)}
+  .sp-btn:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 22px rgba(200,160,130,.20)}
+  .sp-kindle{display:inline-block;margin-top:16px;color:#d98a63;font-weight:700;font-size:13.5px;text-decoration:none}
+  .sp-kindle:hover{text-decoration:underline}
+  .shelf-label{font-size:15.5px;font-weight:800;color:var(--ink-strong);margin:0 0 16px;padding-left:2px}
+
   /* ---------- Results ---------- */
   .result-head{margin:6px 0 26px}
   .result-head h2{font-size:24px;margin:0 0 6px;font-weight:800;letter-spacing:.01em;color:var(--ink-strong)}
@@ -278,6 +302,8 @@
       <h2 id="resultTitle">あなたへのおすすめ</h2>
       <p id="resultDesc"></p>
     </div>
+    <div class="search-panel" id="searchPanel"></div>
+    <h3 class="shelf-label" id="shelfLabel">📚 編集部が選んだ定番</h3>
     <div class="shelf" id="shelf"></div>
   </section>
 
@@ -344,15 +370,26 @@ const KU_URL = `https://www.amazon.co.jp/kindle-dbs/hz/signup?tag=${encodeURICom
    - asin: 分かる場合はAmazonの商品コード(ASIN)を入れると商品ページへ直リンクします。
            空("")のままなら、タイトル+著者名でのAmazon検索リンクになります（必ず開けます）。
    ------------------------------------------------------------------- */
+/* 各カテゴリー:
+   - query : Amazon検索に使うキーワード（きれいな検索語 → 良い結果が出る）
+   - kw    : 悩みの入力文がこのカテゴリーに該当するか判定するための語 */
 const CATEGORIES = [
-  {id:"money",   emoji:"💰", name:"お金・将来の不安"},
-  {id:"work",    emoji:"💼", name:"仕事・キャリア"},
-  {id:"self",    emoji:"🌱", name:"自信・自己肯定感"},
-  {id:"relation",emoji:"🤝", name:"人間関係"},
-  {id:"mental",  emoji:"🧘", name:"心・ストレス"},
-  {id:"habit",   emoji:"⏰", name:"習慣・行動力"},
-  {id:"life",    emoji:"🧭", name:"生き方・目的"},
-  {id:"love",    emoji:"💗", name:"恋愛・パートナー"},
+  {id:"money",   emoji:"💰", name:"お金・将来の不安",
+   query:"お金 不安 節約 投資 貯金", kw:["お金","貯金","節約","収入","副業","投資","家計","経済","将来","老後","借金"]},
+  {id:"work",    emoji:"💼", name:"仕事・キャリア",
+   query:"仕事 キャリア 働き方 転職 生産性", kw:["仕事","キャリア","転職","就職","働く","残業","職場","効率","成果","やりたいこと","天職"]},
+  {id:"self",    emoji:"🌱", name:"自信・自己肯定感",
+   query:"自己肯定感 自信 生き方 マインドセット", kw:["自信","自己肯定","劣等感","変わりたい","承認","自分に","比較","自尊心"]},
+  {id:"relation",emoji:"🤝", name:"人間関係",
+   query:"人間関係 コミュニケーション 対人 話し方", kw:["人間関係","対人","コミュニケーション","上司","部下","職場","嫌わ","苦手","会話","話し方"]},
+  {id:"mental",  emoji:"🧘", name:"心・ストレス",
+   query:"ストレス メンタル 不安 マインドフルネス", kw:["ストレス","メンタル","不安","疲れ","つらい","落ち込","もやもや","心","イライラ","うつ","休みたい"]},
+  {id:"habit",   emoji:"⏰", name:"習慣・行動力",
+   query:"習慣 続ける 行動力 先延ばし", kw:["習慣","続かない","三日坊主","先延ばし","やる気","行動","継続","ダイエット","運動","早起き"]},
+  {id:"life",    emoji:"🧭", name:"生き方・目的",
+   query:"生き方 人生 目的 幸福", kw:["生き方","人生","目的","後悔","方向性","価値観","幸せ","意味"]},
+  {id:"love",    emoji:"💗", name:"恋愛・パートナー",
+   query:"恋愛 夫婦 パートナーシップ 結婚", kw:["恋愛","夫婦","パートナー","結婚","失恋","好き","片思い","彼氏","彼女"]},
 ];
 
 const BOOKS = [
@@ -512,66 +549,130 @@ function buildAmazonUrl(book){
   return `https://www.amazon.co.jp/s?k=${q}&tag=${tag}`;
 }
 
+/* Amazon検索リンクを組み立てる
+   opts.sort  : "review-rank"（レビュー高評価順） / "date-desc-rank"（新着順）
+   opts.kindle: true なら Kindleストア、false なら本(紙・電子含む) */
+function amazonSearch(query, opts){
+  opts = opts || {};
+  const tag = encodeURIComponent(AFFILIATE_TAG);
+  const k = encodeURIComponent(query);
+  const dept = opts.kindle ? "digital-text" : "stripbooks";
+  let url = `https://www.amazon.co.jp/s?k=${k}&i=${dept}&tag=${tag}`;
+  if(opts.sort) url += `&s=${opts.sort}`;
+  return url;
+}
+
 function catName(id){
   const c = CATEGORIES.find(c=>c.id===id);
   return c ? c.name : "";
 }
 
-function renderBooks(books, titleText, descText){
-  const results = document.getElementById("results");
-  const shelf = document.getElementById("shelf");
-  document.getElementById("resultTitle").textContent = titleText;
-  document.getElementById("resultDesc").textContent = descText;
-  shelf.innerHTML = "";
+/* 悩みの入力文＋選択チップ → 関連カテゴリをスコア順に返す */
+function scoreCategories(text, activeChips){
+  return CATEGORIES.map(c=>{
+    let score = 0;
+    (c.kw||[]).forEach(k=>{ if(text.includes(k)) score += 2; });
+    if(activeChips.includes(c.id)) score += 3;
+    return {cat:c, score};
+  }).filter(s=>s.score>0).sort((a,b)=>b.score-a.score).map(s=>s.cat);
+}
 
-  if(books.length === 0){
-    shelf.innerHTML = `<div class="empty">ぴったりの本が見つかりませんでした。<br>下の「悩みのジャンル」から選ぶか、キーワードを変えてもう一度お試しください。</div>`;
+/* Amazon検索パネル（最新・話題・高評価の本がそのつど反映される） */
+function renderSearchPanel(theme, query){
+  const panel = document.getElementById("searchPanel");
+  panel.innerHTML = `
+    <div class="sp-head">🔎 「${theme}」の本を、Amazonからすべて探す</div>
+    <p class="sp-sub">下のボタンから、最新・話題・口コミの良い本が“そのつど”自動で表示されます。</p>
+    <div class="sp-btns">
+      <a class="sp-btn" href="${amazonSearch(query)}" target="_blank" rel="noopener nofollow sponsored">
+        <b>📚 人気・関連順</b><span>定番から話題書まで</span></a>
+      <a class="sp-btn" href="${amazonSearch(query,{sort:'review-rank'})}" target="_blank" rel="noopener nofollow sponsored">
+        <b>⭐ レビュー高評価順</b><span>口コミが良い本</span></a>
+      <a class="sp-btn" href="${amazonSearch(query,{sort:'date-desc-rank'})}" target="_blank" rel="noopener nofollow sponsored">
+        <b>🆕 最新・新刊順</b><span>話題の新しい本</span></a>
+    </div>
+    <a class="sp-kindle" href="${amazonSearch(query,{kindle:true})}" target="_blank" rel="noopener nofollow sponsored">📱 Kindle本（電子書籍）で探す →</a>`;
+}
+
+/* 本のカード（編集部の定番）を並べる */
+function renderShelf(books){
+  const shelf = document.getElementById("shelf");
+  shelf.innerHTML = "";
+  books.forEach(b=>{
+    const card = document.createElement("div");
+    card.className = "book";
+    card.innerHTML = `
+      <span class="cat-tag">${catName(b.cat)}</span>
+      <h3>${b.title}</h3>
+      <p class="author">${b.author}</p>
+      <p class="why">${b.why}</p>
+      <div class="btns">
+        <a class="btn btn-print" href="${buildAmazonUrl(b)}" target="_blank" rel="noopener nofollow sponsored">📖 Amazonで見る</a>
+      </div>`;
+    shelf.appendChild(card);
+  });
+}
+
+/* 結果表示（① Amazon検索パネル ＋ ② 編集部の定番） */
+function showResults(opts){
+  document.getElementById("resultTitle").textContent = opts.title;
+  document.getElementById("resultDesc").textContent = opts.desc || "";
+
+  const panel = document.getElementById("searchPanel");
+  if(opts.query){
+    renderSearchPanel(opts.theme, opts.query);
+    panel.style.display = "block";
   } else {
-    books.forEach(b=>{
-      const card = document.createElement("div");
-      card.className = "book";
-      card.innerHTML = `
-        <span class="cat-tag">${catName(b.cat)}</span>
-        <h3>${b.title}</h3>
-        <p class="author">${b.author}</p>
-        <p class="why">${b.why}</p>
-        <div class="btns">
-          <a class="btn btn-print" href="${buildAmazonUrl(b)}" target="_blank" rel="noopener nofollow sponsored">📖 Amazonで見る</a>
-        </div>`;
-      shelf.appendChild(card);
-    });
+    panel.style.display = "none";
   }
+
+  const books = opts.books || [];
+  renderShelf(books);
+  document.getElementById("shelfLabel").style.display = books.length ? "block" : "none";
+
+  const results = document.getElementById("results");
   results.style.display = "block";
   results.scrollIntoView({behavior:"smooth", block:"start"});
 }
 
-/* 悩みテキスト＋選択チップから、スコアの高い本を返す */
+/* 悩みから、Amazon検索＋編集部の定番を提案 */
 function recommend(){
   const text = document.getElementById("worry").value.trim();
   const activeChips = [...document.querySelectorAll(".chip.active")].map(c=>c.dataset.cat);
 
+  const cats = scoreCategories(text, activeChips);
+
+  // 検索テーマとクエリを決める
+  let theme, query;
+  if(cats.length){
+    theme = cats.slice(0,2).map(c=>c.name).join("・");
+    query = cats.slice(0,2).map(c=>c.query).join(" ");
+  } else if(text){
+    theme = text.slice(0,24) + (text.length>24 ? "…" : "");
+    query = text;
+  } else {
+    theme = "人気のベストセラー";
+    query = "ベストセラー 自己啓発 ビジネス書";
+  }
+
+  // 編集部の定番（本DBからスコアリング）
   const scored = BOOKS.map(b=>{
     let score = 0;
-    // キーワード一致（テキスト内に含まれる）
     b.keywords.forEach(k=>{ if(text.includes(k)) score += 2; });
-    // 選択カテゴリーと一致
     if(activeChips.includes(b.cat)) score += 3;
     return {book:b, score};
   });
-
   let hits = scored.filter(s=>s.score>0).sort((a,b)=>b.score-a.score).map(s=>s.book);
-
-  if(hits.length === 0 && text === "" && activeChips.length === 0){
-    // 何も入力されていない → 全ジャンル代表をおすすめ
-    hits = CATEGORIES.map(c => BOOKS.find(b=>b.cat===c.id)).filter(Boolean);
-    renderBooks(hits, "まずはこの本棚から", "気になる本があれば、そのまま手に取ってみてください。悩みを入力すると、もっとぴったりの本が並びます。");
-    return;
+  if(hits.length === 0 && cats.length){
+    hits = BOOKS.filter(b=>b.cat===cats[0].id);
   }
-
   hits = hits.slice(0, 6);
-  const desc = text ? `「${text.slice(0,40)}${text.length>40?"…":""}」の悩みに効きそうな本を選びました。`
-                    : "選んだジャンルに効く本を選びました。";
-  renderBooks(hits, "あなたへのおすすめ", desc);
+
+  showResults({
+    title: (text || activeChips.length) ? "あなたにおすすめの探し方" : "まずは人気の本から",
+    desc: "①Amazonから最新・高評価の本を探す　②編集部が選んだ定番から選ぶ — どちらもどうぞ。",
+    theme, query, books: hits
+  });
 }
 
 /* チップ生成 */
@@ -592,8 +693,12 @@ CATEGORIES.forEach(c=>{
   card.className = "cat-card";
   card.innerHTML = `<div class="emoji">${c.emoji}</div><div class="name">${c.name}</div>`;
   card.onclick = ()=>{
-    const books = BOOKS.filter(b=>b.cat===c.id);
-    renderBooks(books, `${c.emoji} ${c.name}`, "このジャンルの本棚です。");
+    showResults({
+      title: `${c.emoji} ${c.name}`,
+      desc: "①Amazonから最新・高評価の本を探す　②編集部が選んだ定番から選ぶ — どちらもどうぞ。",
+      theme: c.name, query: c.query,
+      books: BOOKS.filter(b=>b.cat===c.id)
+    });
   };
   catsGrid.appendChild(card);
 });
