@@ -300,8 +300,6 @@
       <h2 id="resultTitle">あなたへのおすすめ</h2>
       <p id="resultDesc"></p>
     </div>
-    <div class="search-panel" id="searchPanel"></div>
-    <h3 class="shelf-label" id="shelfLabel">📚 編集部が選んだ定番</h3>
     <div class="shelf" id="shelf"></div>
   </section>
 
@@ -532,6 +530,93 @@ const BOOKS = [
   {cat:"love", title:"幸せになる勇気 自己啓発の源流「アドラー」の教えII", author:"岸見一郎・古賀史健", asin:"",
    keywords:["恋愛","愛","パートナー","人間関係","結婚","勇気","自立","幸せ","関係"],
    why:"『嫌われる勇気』の続編。<b>「愛すること」こそ自立と幸福への道</b>と説き、恋愛や結婚の悩みに深い視点をくれます。"},
+
+  // ===== 追加ぶん2 =====
+
+  // --- お金・将来の不安 ---
+  {cat:"money", title:"ジェイソン流お金の増やし方", author:"厚切りジェイソン", asin:"",
+   keywords:["お金","投資","増やす","貯金","節約","将来","不安","初心者","資産","運用"],
+   why:"お笑い芸人でIT企業役員の著者が実践する<b>「支出を減らして淡々と積立投資」</b>。ムリなく続けられる、庶民のための資産形成術です。"},
+  {cat:"money", title:"はじめての人のための3000円投資生活", author:"横山光昭", asin:"",
+   keywords:["お金","投資","貯金","節約","初心者","増やす","将来","不安","家計"],
+   why:"毎月<b>3000円から始められる</b>投資のはじめ方。「まとまったお金がないと無理」という思い込みをやさしく外してくれます。"},
+  {cat:"money", title:"投資の大原則 人生を豊かにするためのヒント", author:"バートン・マルキール／チャールズ・エリス", asin:"",
+   keywords:["お金","投資","運用","資産","将来","増やす","老後"],
+   why:"投資の名著2冊のエッセンスを凝縮。<b>長期・分散・低コスト</b>という、世界共通の“王道”をシンプルに学べます。"},
+
+  // --- 仕事・キャリア ---
+  {cat:"work", title:"世界一やさしい「やりたいこと」の見つけ方", author:"八木仁平", asin:"",
+   keywords:["仕事","やりたいこと","キャリア","天職","進路","自己分析","働く","将来","強み"],
+   why:"「好きなこと×得意なこと×大事なこと」から<b>本当にやりたいことを言語化</b>。将来に迷う人の決定版ワークブックです。"},
+  {cat:"work", title:"学び効率が最大化するアウトプット大全", author:"樺沢紫苑", asin:"",
+   keywords:["仕事","成長","勉強","スキル","成果","効率","キャリア","アウトプット"],
+   why:"話す・書く・行動するの<b>アウトプット術を80</b>。学びを成果に変える具体策で、仕事の成長スピードが上がります。"},
+  {cat:"work", title:"多動力", author:"堀江貴文", asin:"",
+   keywords:["仕事","働き方","行動","やりたいこと","キャリア","効率","挑戦"],
+   why:"一つのことにこだわらず<b>次々と動く力</b>の時代へ。堀江貴文流の、軽やかに動いて成果を出す働き方が刺激になります。"},
+
+  // --- 自信・自己肯定感 ---
+  {cat:"self", title:"自己肯定感の教科書", author:"中島輝", asin:"",
+   keywords:["自信","自己肯定","自尊心","変わりたい","落ち込む","前向き","比較"],
+   why:"自己肯定感を6つの感覚に分解し、<b>今日から高める具体的なワーク</b>を紹介。落ち込みやすい自分をやさしく立て直せます。"},
+  {cat:"self", title:"1%の努力", author:"ひろゆき（西村博之）", asin:"",
+   keywords:["自信","生き方","働き方","考え方","がんばりすぎ","楽","変わりたい"],
+   why:"「がんばればなんとかなる」から少し離れて。<b>力の抜きどころを見極める</b>ひろゆき流の思考が、肩の力を抜いてくれます。"},
+  {cat:"self", title:"置かれた場所で咲きなさい", author:"渡辺和子", asin:"",
+   keywords:["自信","生き方","つらい","前向き","心","自己肯定","そのまま"],
+   why:"シスターが贈る、静かで強い言葉の数々。<b>今いる場所で自分らしく咲く</b>という視点が、比べて疲れた心を癒します。"},
+
+  // --- 人間関係 ---
+  {cat:"relation", title:"人は話し方が9割", author:"永松茂久", asin:"",
+   keywords:["人間関係","話し方","会話","コミュニケーション","苦手","対人","職場","信頼"],
+   why:"うまく話すより<b>相手が話しやすい空気をつくる</b>ことが大事。会話が苦手な人でもラクになる、やさしい話し方の教科書です。"},
+  {cat:"relation", title:"頭に来てもアホとは戦うな！", author:"田村耕太郎", asin:"",
+   keywords:["人間関係","対人","イライラ","職場","上司","苦手","ストレス","嫌わ"],
+   why:"苦手な相手にムキにならず<b>賢く受け流す</b>技術。人間関係のイライラを、戦わずに手放すヒントが詰まっています。"},
+  {cat:"relation", title:"話すチカラ", author:"齋藤孝・安住紳一郎", asin:"",
+   keywords:["人間関係","話し方","会話","コミュニケーション","伝える","対人"],
+   why:"名アナウンサーと教育学者が語る、<b>伝わる話し方の極意</b>。雑談から人前で話すコツまで、実践的で明日から使えます。"},
+
+  // --- 心・ストレス ---
+  {cat:"mental", title:"精神科医が教える ストレスフリー超大全", author:"樺沢紫苑", asin:"",
+   keywords:["ストレス","メンタル","不安","心","疲れた","つらい","悩み","イライラ","人間関係"],
+   why:"人間関係・お金・健康など、あらゆる悩みの対処法を<b>1テーマ数ページで網羅</b>。今のモヤモヤの“処方箋”がきっと見つかります。"},
+  {cat:"mental", title:"うつヌケ うつトンネルを抜けた人たち", author:"田中圭一", asin:"",
+   keywords:["メンタル","うつ","つらい","落ち込む","心","疲れた","休みたい","回復"],
+   why:"うつを経験した人たちの回復の物語をマンガで。<b>「抜け出せる」という実感</b>が、苦しい今の支えになります。"},
+  {cat:"mental", title:"幸福優位7つの法則", author:"ショーン・エイカー", asin:"",
+   keywords:["メンタル","幸せ","前向き","ストレス","心","ポジティブ","仕事"],
+   why:"「成功したら幸せ」ではなく<b>「幸せだから成功する」</b>。科学的に前向きさを育てる7つの法則で、日常が明るくなります。"},
+
+  // --- 習慣・行動力 ---
+  {cat:"habit", title:"ぼくたちは習慣で、できている。", author:"佐々木典士", asin:"",
+   keywords:["習慣","続かない","やる気","意志","行動","継続","変わりたい","先延ばし"],
+   why:"「意志が弱い」のではなく<b>習慣の仕組みを知らないだけ</b>。ミニマリスト著者が、努力を努力と感じないコツを教えてくれます。"},
+  {cat:"habit", title:"自分を操る超集中力", author:"メンタリストDaiGo", asin:"",
+   keywords:["習慣","集中","効率","勉強","仕事","行動","先延ばし","やる気"],
+   why:"集中力は生まれつきではなく<b>技術で高められる</b>。短時間で成果を出す方法で、ダラダラ時間を減らせます。"},
+  {cat:"habit", title:"習慣が10割", author:"吉井雅之", asin:"",
+   keywords:["習慣","続かない","三日坊主","行動","継続","変わりたい","やる気"],
+   why:"人生は<b>習慣の積み重ねでできている</b>。小さな習慣の作り方を、精神論でなく具体的な手順で示してくれます。"},
+
+  // --- 生き方・目的 ---
+  {cat:"life", title:"君たちはどう生きるか", author:"吉野源三郎", asin:"",
+   keywords:["生き方","人生","目的","価値観","成長","考え方","迷い"],
+   why:"少年コペル君の経験を通して<b>「どう生きるか」を自分に問う</b>不朽の名作。何度読んでも、生き方の軸を思い出させてくれます。"},
+  {cat:"life", title:"モモ", author:"ミヒャエル・エンデ", asin:"",
+   keywords:["生き方","人生","時間","忙しい","目的","心","物語"],
+   why:"“時間どろぼう”と少女モモの物語。<b>忙しさに流される毎日を見つめ直す</b>、大人にこそ響くファンタジーです。"},
+  {cat:"life", title:"人生の短さについて", author:"セネカ", asin:"",
+   keywords:["生き方","人生","時間","後悔","目的","方向性","使い方"],
+   why:"2000年前の哲学者が説く<b>「時間の使い方こそ人生」</b>。短くて濃い言葉が、今の生き方を静かに問い直させます。"},
+
+  // --- 恋愛・パートナー ---
+  {cat:"love", title:"夫のトリセツ", author:"黒川伊保子", asin:"",
+   keywords:["恋愛","夫婦","夫","結婚","喧嘩","すれ違い","パートナー","男性","会話"],
+   why:"『妻のトリセツ』の対になる一冊。<b>夫という生き物の取扱説明書</b>で、なぜ噛み合わないのかが分かり、関係がラクになります。"},
+  {cat:"love", title:"LOVE理論", author:"水野敬也", asin:"",
+   keywords:["恋愛","好き","片思い","モテ","パートナー","出会い","自信"],
+   why:"『夢をかなえるゾウ』著者が、笑わせながら教える恋愛の“行動理論”。<b>考えすぎて動けない人の背中を押す</b>一冊です。"},
 ];
 
 /* ------------------------------------------------------------------- */
@@ -547,52 +632,12 @@ function buildAmazonUrl(book){
   return `https://www.amazon.co.jp/s?k=${q}&tag=${tag}`;
 }
 
-/* Amazon検索リンクを組み立てる
-   opts.sort  : "review-rank"（レビュー高評価順） / "date-desc-rank"（新着順）
-   opts.kindle: true なら Kindleストア、false なら本(紙・電子含む) */
-function amazonSearch(query, opts){
-  opts = opts || {};
-  const tag = encodeURIComponent(AFFILIATE_TAG);
-  const k = encodeURIComponent(query);
-  const dept = opts.kindle ? "digital-text" : "stripbooks";
-  let url = `https://www.amazon.co.jp/s?k=${k}&i=${dept}&tag=${tag}`;
-  if(opts.sort) url += `&s=${opts.sort}`;
-  return url;
-}
-
 function catName(id){
   const c = CATEGORIES.find(c=>c.id===id);
   return c ? c.name : "";
 }
 
-/* 悩みの入力文＋選択チップ → 関連カテゴリをスコア順に返す */
-function scoreCategories(text, activeChips){
-  return CATEGORIES.map(c=>{
-    let score = 0;
-    (c.kw||[]).forEach(k=>{ if(text.includes(k)) score += 2; });
-    if(activeChips.includes(c.id)) score += 3;
-    return {cat:c, score};
-  }).filter(s=>s.score>0).sort((a,b)=>b.score-a.score).map(s=>s.cat);
-}
-
-/* Amazon検索パネル（最新・話題・高評価の本がそのつど反映される） */
-function renderSearchPanel(theme, query){
-  const panel = document.getElementById("searchPanel");
-  panel.innerHTML = `
-    <div class="sp-head">🔎 「${theme}」の本を、Amazonからすべて探す</div>
-    <p class="sp-sub">下のボタンから、最新・話題・口コミの良い本が“そのつど”自動で表示されます。</p>
-    <div class="sp-btns">
-      <a class="sp-btn" href="${amazonSearch(query)}" target="_blank" rel="noopener nofollow sponsored">
-        <b>📚 人気・関連順</b><span>定番から話題書まで</span></a>
-      <a class="sp-btn" href="${amazonSearch(query,{sort:'review-rank'})}" target="_blank" rel="noopener nofollow sponsored">
-        <b>⭐ レビュー高評価順</b><span>口コミが良い本</span></a>
-      <a class="sp-btn" href="${amazonSearch(query,{sort:'date-desc-rank'})}" target="_blank" rel="noopener nofollow sponsored">
-        <b>🆕 最新・新刊順</b><span>話題の新しい本</span></a>
-    </div>
-    <a class="sp-kindle" href="${amazonSearch(query,{kindle:true})}" target="_blank" rel="noopener nofollow sponsored">📱 Kindle本（電子書籍）で探す →</a>`;
-}
-
-/* 本のカード（編集部の定番）を並べる */
+/* 本のカードを並べる */
 function renderShelf(books){
   const shelf = document.getElementById("shelf");
   shelf.innerHTML = "";
@@ -611,66 +656,36 @@ function renderShelf(books){
   });
 }
 
-/* 結果表示（① Amazon検索パネル ＋ ② 編集部の定番） */
-function showResults(opts){
-  document.getElementById("resultTitle").textContent = opts.title;
-  document.getElementById("resultDesc").textContent = opts.desc || "";
-
-  const panel = document.getElementById("searchPanel");
-  if(opts.query){
-    renderSearchPanel(opts.theme, opts.query);
-    panel.style.display = "block";
-  } else {
-    panel.style.display = "none";
-  }
-
-  const books = opts.books || [];
+/* 結果表示 */
+function showResults(title, desc, books){
+  document.getElementById("resultTitle").textContent = title;
+  document.getElementById("resultDesc").textContent = desc || "";
   renderShelf(books);
-  document.getElementById("shelfLabel").style.display = books.length ? "block" : "none";
-
   const results = document.getElementById("results");
   results.style.display = "block";
   results.scrollIntoView({behavior:"smooth", block:"start"});
 }
 
-/* 悩みから、Amazon検索＋編集部の定番を提案 */
+/* 悩みのキーワードから、ぴったりの本を厳選して表示 */
 function recommend(){
   const text = document.getElementById("worry").value.trim();
-  const activeChips = [...document.querySelectorAll(".chip.active")].map(c=>c.dataset.cat);
 
-  const cats = scoreCategories(text, activeChips);
-
-  // 検索テーマとクエリを決める
-  let theme, query;
-  if(cats.length){
-    theme = cats.slice(0,2).map(c=>c.name).join("・");
-    query = cats.slice(0,2).map(c=>c.query).join(" ");
-  } else if(text){
-    theme = text.slice(0,24) + (text.length>24 ? "…" : "");
-    query = text;
-  } else {
-    theme = "人気のベストセラー";
-    query = "ベストセラー 自己啓発 ビジネス書";
-  }
-
-  // 編集部の定番（本DBからスコアリング）
   const scored = BOOKS.map(b=>{
     let score = 0;
     b.keywords.forEach(k=>{ if(text.includes(k)) score += 2; });
-    if(activeChips.includes(b.cat)) score += 3;
     return {book:b, score};
   });
   let hits = scored.filter(s=>s.score>0).sort((a,b)=>b.score-a.score).map(s=>s.book);
-  if(hits.length === 0 && cats.length){
-    hits = BOOKS.filter(b=>b.cat===cats[0].id);
-  }
-  hits = hits.slice(0, 6);
 
-  showResults({
-    title: (text || activeChips.length) ? "あなたにおすすめの探し方" : "まずは人気の本から",
-    desc: "①Amazonから最新・高評価の本を探す　②編集部が選んだ定番から選ぶ — どちらもどうぞ。",
-    theme, query, books: hits
-  });
+  if(hits.length === 0){
+    // キーワードに一致しない → 各ジャンルの代表を紹介
+    hits = CATEGORIES.map(c => BOOKS.find(b=>b.cat===c.id)).filter(Boolean);
+    showResults("いろいろな本棚から", "気になる本があれば手に取ってみてください。悩みのキーワードを入れると、もっとぴったりの本が並びます。", hits);
+    return;
+  }
+
+  hits = hits.slice(0, 8);
+  showResults("あなたへのおすすめ", `「${text.slice(0,40)}${text.length>40?"…":""}」に効きそうな本を選びました。`, hits);
 }
 
 /* ジャンルカード生成 */
@@ -680,12 +695,7 @@ CATEGORIES.forEach(c=>{
   card.className = "cat-card";
   card.innerHTML = `<div class="emoji">${c.emoji}</div><div class="name">${c.name}</div>`;
   card.onclick = ()=>{
-    showResults({
-      title: `${c.emoji} ${c.name}`,
-      desc: "①Amazonから最新・高評価の本を探す　②編集部が選んだ定番から選ぶ — どちらもどうぞ。",
-      theme: c.name, query: c.query,
-      books: BOOKS.filter(b=>b.cat===c.id)
-    });
+    showResults(`${c.emoji} ${c.name}`, "このジャンルの本棚です。", BOOKS.filter(b=>b.cat===c.id));
   };
   catsGrid.appendChild(card);
 });
